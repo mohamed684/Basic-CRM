@@ -3,11 +3,12 @@
 namespace App\Frontend\Controller;
 
 
-class NotFoundController {
+class NotFoundController extends AbstractController {
 
     public function error404(): void {
         http_response_code(404);
-        echo 'Error 404 From Controller';
+        
+        $this->render('notFound/error404.view', []);
     }
 
 }
