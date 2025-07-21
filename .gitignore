@@ -1,0 +1,7 @@
+# Ignore PHP Folder
+PHP/
+uploads/
+/.vscode/
+
+.htaccess
+.htpasswd
