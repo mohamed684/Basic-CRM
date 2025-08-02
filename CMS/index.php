@@ -2,17 +2,35 @@
 
 require __DIR__ . '/inc/all.inc.php';
 
+$container = new App\Support\Container();
+$container->bind('pdo', fn() => require __DIR__ . '/inc/db-connect.inc.php');
+$container->bind('pagesRepository', function() use($container) {
+    return new App\Repository\PagesRepository($container->get('pdo'));
+});
+$container->bind('pagesController', function() use($container) {
+    return new App\Frontend\Controller\PagesController($container->get('pagesRepository'));
+});
+$container->bind('notFoundController', function() use($container) {
+    return new App\Frontend\Controller\NotFoundController($container->get('pagesRepository'));
+});
+
+$container->bind('pagesAdminController', fn() => new App\Admin\Controller\PagesAdminController($container->get('pagesRepository')));
+
 $route = (string) ($_GET['route'] ?? 'pages');
 
 
 if($route === 'pages') {
     $page = (string) ($_GET['page'] ?? 'index');
 
-    $pageRepository = new \App\Repository\PagesRepository($pdo);
-
-    $pageController = new \App\Frontend\Controller\PagesController($pageRepository);
-    $pageController->showPage($page);
+    $pagesController = $container->get('pagesController');
+    $pagesController->showPage($page);
+} else if($route === 'admin') {
+    $pagesAdminController = $container->get('pagesAdminController');
+    $pagesAdminController->index('pages/index.view');
+} else if($route === 'admin/pages/create') {
+    $pagesAdminController = $container->get('pagesAdminController');
+    $pagesAdminController->create('pages/create.view');
 } else {
-    $notFoundController = new \App\Frontend\Controller\NotFoundController();
+    $notFoundController = $container->get('notFoundController');
     $notFoundController->error404();
 }
