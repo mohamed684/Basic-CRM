@@ -58,4 +58,18 @@ class PagesRepository {
         }
     }
 
+    public function delete(int $id) {
+        $stmt = $this->pdo->prepare('DELETE FROM pages WHERE id = :id');
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+    }
+
+    public function update(int $id, string $title, string $content) {
+        $stmt = $this->pdo->prepare('UPDATE pages SET title = :title, content = :content WHERE id = :id');
+        $stmt->bindValue(':title', $title);
+        $stmt->bindValue(':content', $content);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+    }
+
 }
