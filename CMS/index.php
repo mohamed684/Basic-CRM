@@ -16,6 +16,8 @@ $container->bind('notFoundController', function() use($container) {
 
 $container->bind('pagesAdminController', fn() => new App\Admin\Controller\PagesAdminController($container->get('pagesRepository')));
 
+$container->bind('loginController', fn() => new App\Admin\Controller\LoginController());
+
 $route = (string) ($_GET['route'] ?? 'pages');
 
 
@@ -24,6 +26,9 @@ if($route === 'pages') {
 
     $pagesController = $container->get('pagesController');
     $pagesController->showPage($page);
+} else if($route === 'admin/login') {
+    $loginController = $container->get('loginController');
+    $loginController->login();
 } else if($route === 'admin/pages') {
     $pagesAdminController = $container->get('pagesAdminController');
     $pagesAdminController->index('pages/index.view');
