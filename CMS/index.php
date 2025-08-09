@@ -16,7 +16,8 @@ $container->bind('notFoundController', function() use($container) {
 
 $container->bind('pagesAdminController', fn() => new App\Admin\Controller\PagesAdminController($container->get('pagesRepository')));
 
-$container->bind('loginController', fn() => new App\Admin\Controller\LoginController());
+$container->bind('authService', fn() => new App\Admin\Helper\AuthService($container->get('pdo')));
+$container->bind('loginController', fn() => new App\Admin\Controller\LoginController($container->get('authService')));
 
 $route = (string) ($_GET['route'] ?? 'pages');
 
