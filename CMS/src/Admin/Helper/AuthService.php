@@ -10,7 +10,7 @@ class AuthService {
         if (empty($username)) return false;
         if (empty($password)) return false;
 
-        $stmt = $this->pdo->prepare('SELECT `password` FROM users WHERE username = :username');
+        $stmt = $this->pdo->prepare('SELECT `password`, `id` FROM users WHERE username = :username');
         $stmt->bindValue(':username', $username);
         $stmt->execute();
 
@@ -22,8 +22,26 @@ class AuthService {
         $hash = $entry['password'];
         $password_verified = password_verify($password, $hash);
 
+        if(empty($password_verified)) {
+            return false;
+        }
 
-        return $password_verified;
+        session_start();
+        $_SESSION['adminUserId'] = $entry['id'];
+        session_regenerate_id();
+
+        return true;
+    }
+
+    public function isLoggedIn(): bool {
+        session_start();
+        return !empty($_SESSION['adminUserId']);
+    }
+
+    public function ensureLoggedIn() {
+        if(!$this->isLoggedIn()) {
+            header('Location: index.php?' . http_build_query(['route' => 'admin/login']));
+        }
     }
 
 }

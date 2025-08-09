@@ -9,6 +9,11 @@ class LoginController extends AbstractAdminController {
     public function __construct(private AuthService $authService) {}
 
     public function login() {
+
+        if($this->authService->isLoggedIn()) {
+            header('Location: index.php?route=admin/pages');
+        }
+
         $loginError = false;
         if($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
             $username = $_POST['username'] ?? '';
@@ -20,9 +25,10 @@ class LoginController extends AbstractAdminController {
                     header('Location: index.php?route=admin/pages');
                 }
             }
+
+            $loginError = true;
         }
 
-        $loginError = true;
 
         $this->render('auth/login.view', [
             'loginError' => $loginError
