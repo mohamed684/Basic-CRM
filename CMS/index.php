@@ -67,8 +67,8 @@ switch ($route) {
 
         if (isset($adminPagesRoutes[$route])) {
             $authService = $container->get('authService');
-
             $authService->ensureLoggedIn();
+
             [$method, $view] = $adminPagesRoutes[$route];
             $container->get('pagesAdminController')->{$method}($view);
         } else {
