@@ -3,5 +3,5 @@
 </h1>
 
 <p>
-    <?= nl2br(e($page->content)) ?>
+    <?= nl2br(e_html($page->content)) ?>
 </p>
