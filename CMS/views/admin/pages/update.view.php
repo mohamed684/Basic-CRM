@@ -8,6 +8,7 @@
 
 
 <form method="POST" action="index.php?route=admin/pages/update">
+    <input type="hidden" name="_csrf" value="<?= csrf_token() ?>">
     <input type="hidden" name="id" value="<?php if(!empty($page->id)): ?> <?= $page->id ?> <?php endif ?>">
     <label for="title">Title:</label>
     <input type="text" name="title" id="title" value="<?php if(!empty($page->title)): ?> <?= e($page->title) ?> <?php endif ?>" required>

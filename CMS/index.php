@@ -19,33 +19,19 @@ $container->bind('pagesAdminController', fn() => new App\Admin\Controller\PagesA
 $container->bind('authService', fn() => new App\Admin\Helper\AuthService($container->get('pdo')));
 $container->bind('loginController', fn() => new App\Admin\Controller\LoginController($container->get('authService')));
 
+$container->bind('csrfToken', fn() => new App\Admin\Helper\CSRFToken());
+
+
+$csrfToken = $container->get('csrfToken');
+
+$csrfToken->handle();
+function csrf_token(){
+    global $csrfToken;
+    return $csrfToken->generate_token();
+}
+
 $route = (string) ($_GET['route'] ?? 'pages');
 
-
-// if($route === 'pages') {
-//     $page = (string) ($_GET['page'] ?? 'index');
-
-//     $pagesController = $container->get('pagesController');
-//     $pagesController->showPage($page);
-// } else if($route === 'admin/login') {
-//     $loginController = $container->get('loginController');
-//     $loginController->login();
-// } else if($route === 'admin/pages') {
-//     $pagesAdminController = $container->get('pagesAdminController');
-//     $pagesAdminController->index('pages/index.view');
-// } else if($route === 'admin/pages/create') {
-//     $pagesAdminController = $container->get('pagesAdminController');
-//     $pagesAdminController->create('pages/create.view');
-// } else if($route === 'admin/pages/delete') {
-//     $pagesAdminController = $container->get('pagesAdminController');
-//     $pagesAdminController->delete('pages/delete.view');
-// } else if($route === 'admin/pages/update') {
-//     $pagesAdminController = $container->get('pagesAdminController');
-//     $pagesAdminController->update('pages/update.view');
-// } else {
-//     $notFoundController = $container->get('notFoundController');
-//     $notFoundController->error404();
-// }
 
 switch ($route) {
     case 'pages':

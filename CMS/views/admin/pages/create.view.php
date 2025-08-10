@@ -9,6 +9,8 @@
 
 <form method="POST" action="index.php?route=admin/pages/create">
 
+    <input type="hidden" name="_csrf" value="<?= csrf_token() ?>">
+
     <label for="title">Title:</label>
     <input type="text" name="title" id="title" required>
 

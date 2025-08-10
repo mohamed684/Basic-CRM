@@ -25,6 +25,7 @@
                     </a>
 
                     <form method="POST" action="index.php?<?php echo http_build_query(['route' => 'admin/pages/delete']) ?>">
+                        <input type="hidden" name="_csrf" value="<?= csrf_token() ?>">
                         <input type="hidden" name="id" value="<?= e($page->id) ?>">
                         <input style="background:red;" type="submit" value="Delete">
                     </form>

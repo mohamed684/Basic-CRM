@@ -29,7 +29,7 @@ class PagesAdminController extends AbstractAdminController {
             if(!empty($title) && !empty($slug) && !empty($content)) {
                 if(!$this->pagesRepository->isSlugExists($slug)) {
                     $this->pagesRepository->create($title, $slug, $content);
-                    header('Location: index.php?route/admin/pages');
+                    header('Location: index.php?route=admin/pages');
                     return;
                 } else {
                     $errors[] = 'Slug Already Exists';
