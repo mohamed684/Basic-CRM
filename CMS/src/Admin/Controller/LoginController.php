@@ -34,4 +34,9 @@ class LoginController extends AbstractAdminController {
             'loginError' => $loginError
         ]);
     }
+
+    public function logout() {
+        $this->authService->logout();
+        header('Location: index.php?route=admin/login');
+    }
 }

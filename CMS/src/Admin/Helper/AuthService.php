@@ -50,4 +50,10 @@ class AuthService {
         }
     }
 
+    public function logout() {
+        $this->ensureSession();
+        unset($_SESSION['adminUserId']);
+        session_regenerate_id();
+    }
+
 }

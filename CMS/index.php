@@ -57,6 +57,10 @@ switch ($route) {
         $container->get('loginController')->login();
         break;
 
+    case 'admin/logout':
+        $container->get('loginController')->logout();
+        break;
+
     default:
         $adminPagesRoutes = [
             'admin/pages'         => ['index',  'pages/index.view'],

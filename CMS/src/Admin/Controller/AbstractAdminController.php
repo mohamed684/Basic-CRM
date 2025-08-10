@@ -2,7 +2,6 @@
 
 namespace App\Admin\Controller;
 
-
 class AbstractAdminController {
 
     public function __construct() {}
@@ -14,6 +13,13 @@ class AbstractAdminController {
         require __DIR__ . '/../../../views/admin/' . $view . '.php';
         $contents = ob_get_clean();
 
+        if(session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        if(!empty($_SESSION['adminUserId'])) {
+            $loggedIn = true;
+        }
 
         require __DIR__ . '/../../../views/admin/layouts/main.view.php';
     }
