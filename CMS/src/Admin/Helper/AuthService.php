@@ -6,6 +6,12 @@ class AuthService {
 
     public function __construct(private PDO $pdo) {}
 
+    public function ensureSession() {
+        if(session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+    }
+
     public function handleLogin(string $username, string $password): bool {
         if (empty($username)) return false;
         if (empty($password)) return false;
@@ -26,7 +32,7 @@ class AuthService {
             return false;
         }
 
-        session_start();
+        $this->ensureSession();
         $_SESSION['adminUserId'] = $entry['id'];
         session_regenerate_id();
 
@@ -34,7 +40,7 @@ class AuthService {
     }
 
     public function isLoggedIn(): bool {
-        session_start();
+        $this->ensureSession();
         return !empty($_SESSION['adminUserId']);
     }
 
